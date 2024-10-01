@@ -16,27 +16,25 @@ public class Players implements cs3331TicTacToePlayer {
         this.game = game;
     }
 
-    // Getter for the player's symbol
+    // Getter method to retrieve player's symbol
     public String getSymbol() {
         return this.symbol;
     }
 
     @Override
     public void selectSquare(int row, int col) {
-        // Check if the selected square is not already marked
+        // Check if the selected square byt the user is not already taken or marked. 
         cs3331TicTacToeSquare square = board.squareAt(row, col);
         if (square != null) {
             try {
-                // Mark the square with the player's symbol (X or O)
+                // Assign player's symbol to the selected sqaure spot
                 square.markSquare(this.symbol);
-
-                // Inform the controller that the player's turn is finished
+                //Letting the controller know that the  player is finished with their turn.
                 controller.finishedTurn();
-
                 // Notify the game to handle the end of the turn (switch player, check win/tie, etc.)
                 game.endTurn();
             } catch (Exception e) {
-                // Handle any case where marking the square is not allowed
+                //handle invalid seletions by the user 
                 game.invalidSquareChosen(row, col);
             }
         }
