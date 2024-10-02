@@ -1,18 +1,26 @@
-## Getting Started
+# Tic-Tac-Toe Game
+Java Tic-Tac-Toe game. 
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+Two players play traditional tic tac toe game in a 3 x 3 game. 
 
-## Folder Structure
+Detects the winner, ties, invalid moves, and restarting games.
 
-The workspace contains two folders by default, where:
+- **myTicTacToe.java**: Implements the core game logic, handles turn switching, win detection, tie detection, and restarts.
 
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
+- **Players.java**: Players are defined.  Handles marking, and selecting squares for moving. 
 
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
+Author: Kevin Hernandez 
+Date: 10/1/2024
+CSCI-3331-001
 
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
 
-## Dependency Management
 
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+Programming language: JavaSE-22
+GUI Framework: JavaFX
+
+Helper Classes: 
+    1. cs3331TicTacToeBoard
+    2. cs3331TicTacToeController
+    3. cs3331TicTacToeSquare
+
+

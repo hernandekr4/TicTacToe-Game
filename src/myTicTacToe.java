@@ -7,9 +7,7 @@ import javafx.scene.paint.Color;
 
 public class myTicTacToe implements cs3331TicTacToeGame {
 
-    //Constants for minimum moves required for win and maximum for a tie 
-    private static final int MIN_MOVES_FOR_WIN = 5;
-    private static final int MAX_MOVES = 9;
+
 
     //Instance variables
     private cs3331TicTacToeBoard board;
@@ -17,16 +15,23 @@ public class myTicTacToe implements cs3331TicTacToeGame {
     private Players playerX;
     private Players playerO;
     private Players currentPlayer;
-    private int moveCount;
+    private int stepCount;
+    private cs3331TicTacToePlayer winner;  // Global variable for tracking winner
+
+        //Constants for minimum moves required for win and maximum for a tie 
+        private static final int MOVES_TO_TRIGGER_WIN_CHECK = 5;
+        private static final int MAX_TURNS_LIMIT = 9;
+
 
     // Consturctor to initialize the board 
     public myTicTacToe() {
         // Set up the board and controller
         this.board = new cs3331TicTacToeBoard();
         this.controller = new cs3331TicTacToeController();
+        this.winner = null;
 
-        //Create two players  which are two instances
-        // Initialize players with symbols "X" and "O"
+        //Create two players  which are two instances, with their respective symbols
+        
         this.playerX = new Players("X", board, controller, this);
         this.playerO = new Players("O", board, controller, this);
 
@@ -34,7 +39,7 @@ public class myTicTacToe implements cs3331TicTacToeGame {
         this.currentPlayer = playerX; 
 
         //Start move count with 0
-        this.moveCount = 0;
+        this.stepCount = 0;
 
         // Add both instances to the contorller 
         controller.addPlayer(playerX);
@@ -42,7 +47,7 @@ public class myTicTacToe implements cs3331TicTacToeGame {
 
 
         // Start game message
-        controller.setControllerMessage("Select a square to start playing!");
+        controller.setControllerMessage("Select a square to start playing");
     }
 
 
@@ -50,11 +55,11 @@ public class myTicTacToe implements cs3331TicTacToeGame {
     //Method to execute after the end of each turn.
     public void endTurn() {
         // Add a move after each attempt
-        moveCount++;
+        stepCount++;
 
         // Check for winner once the minimum amount of winning moves is reached
-        if (moveCount >= MIN_MOVES_FOR_WIN) {
-            cs3331TicTacToePlayer winner = controller.getWinningPlayer();
+        if (stepCount >= MOVES_TO_TRIGGER_WIN_CHECK) {
+            winner = controller.getWinningPlayer();
 
             //Check for winner 
             if (winner != null) {
@@ -65,13 +70,14 @@ public class myTicTacToe implements cs3331TicTacToeGame {
         }
 
         // Check for a tie after 9 moves if no winner
-        if (moveCount == MAX_MOVES) {
+        if (stepCount == MAX_TURNS_LIMIT) {
             // All squares filled and no winner, declare a tie
             noWinner();
-            return; // Stop the game if it's a tie
+            //Halt game 
+            return;
         }
 
-        // Switch players if no winner or tie
+        // Switch players if no winner or tie is detected 
         switchPlayer();
     }
 
@@ -83,6 +89,7 @@ public class myTicTacToe implements cs3331TicTacToeGame {
         controller.setControllerMessage("Player " + currentPlayer.getSymbol() + "'s turn");
     }
 
+    
 
     @Override
     public void invalidSquareChosen(int row, int col) {
@@ -91,19 +98,19 @@ public class myTicTacToe implements cs3331TicTacToeGame {
     }
     @Override
     public void noWinner() {
-        controller.setControllerMessage("It's a tie");
+        controller.setControllerMessage("it's a tie");
     }
 
 
     @Override
     public void playerWins() {
-        cs3331TicTacToePlayer winner = controller.getWinningPlayer();
+        winner = controller.getWinningPlayer();
         if (winner instanceof Players) { // Check if the instance can be cast to Players
             Players winningPlayer = (Players) winner; // Safe casting
             controller.setControllerMessage("Player " + winningPlayer.getSymbol() + " wins");
             board.highlightWinningSquares(Color.GREEN);
         } else {
-            controller.setControllerMessage("Error: Winning player data is not available.");
+            controller.setControllerMessage("Error: Winning player data not found.");
         }
     }
  
@@ -112,25 +119,21 @@ public class myTicTacToe implements cs3331TicTacToeGame {
     @Override
     public void restartGame() {
 
-        // Clear the board and reset everything
-        // Reset the visual symbols and highlights
+        // Clear the board and reset everything, by resetting symbols, and highlights
         board.clearSymbols(); 
         board.clearHighlights(); 
 
         
         // Resets game settings in order to restart the game.
         controller.playAgain(); 
+        
         // Reset move count
-        moveCount = 0; 
+        stepCount = 0; 
+
         // Make sure to start with Player X
         currentPlayer = playerX; 
 
         // reset the controller message for new game
         controller.setControllerMessage("Select a square to start playing!"); // Reset the message
     }
-
-
-    
-
-    
 }
